@@ -8,16 +8,12 @@ echo "DATE = $(date +"%d %B %Y %T")"
 echo "UPTIME = $(uptime -p | awk -F"up " '{print $NF}')"
 echo "UPTIME_SEC = $(uptime -p | awk -F"." '{print $1}' /proc/uptime)"
 
-######
-ip=$(hostname -I | awk '{print $1}')
-echo "IP = $ip"
-
-# ip_mask="$(ip -4 a | awk -F" " /"$ip"/'{print $2}')"
-mask="$(ip -4 a | grep "$ip" | awk '{print $2}')"
-# mask2=$(ip -4 addr show | grep inet | awk '{print $2}' | cut -d '/' -f 2 | head -n 1)
-# echo "MASK = $ip_mask" | awk -F"/" '{print $2}'
-echo "MASK = $mask"
-# | cut -d '/' -f 2 | head -n 1
-######
+./print_ip_and_mask.sh
 
 echo "GATEWAY = $(ip r | grep default | awk '{print $3}')"
+echo "RAM_TOTAL = $(free -m | grep -i mem | awk '{printf "%.3f GB\n", $2/1024}')"
+echo "RAM_USED = $(free -m | grep -i mem | awk '{printf "%.3f GB\n", $3/1024}')"
+echo "RAM_FREE = $(free -m | grep -i mem | awk '{printf "%.3f GB\n", $4/1024}')"
+echo "SPACE_ROOT = $(df -k /root/ | grep / | awk '{printf "%.2f MB\n", $2/1024}')"
+echo "SPACE_ROOT_USED = $(df -k /root/ | grep / | awk '{printf "%.2f MB\n", $3/1024}')"
+echo "SPACE_ROOT_FREE = $(df -k /root/ | grep / | awk '{printf "%.2f MB\n", $4/1024}')"
